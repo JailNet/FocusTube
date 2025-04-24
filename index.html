@@ -8,6 +8,37 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Kalam:wght@700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+    function openYouTubeSearch(searchQuery) {
+        // Android/iPhone app deep link
+        const appUrl = `youtube://results?search_query=${encodeURIComponent(searchQuery)}`;
+        
+        // Web fallback
+        const webUrl = `https://www.youtube.com/results?search_query=${encodeURIComponent(searchQuery)}`;
+        
+        // Try to open app
+        window.location.href = appUrl;
+        
+        // If app fails to open, redirect to web after timeout
+        const timeout = setTimeout(() => {
+            window.location.href = webUrl;
+        }, 500);
+        
+        // If the page is hidden (app opened successfully), cancel the timeout
+        window.addEventListener('visibilitychange', () => {
+            if (document.hidden) {
+                clearTimeout(timeout);
+            }
+        }, { once: true });
+    }
+
+    document.getElementById('youtubeSearchForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        const searchQuery = document.getElementById('youtubeSearchInput').value;
+        openYouTubeSearch(searchQuery);
+    });
+</script>
+
     <style>
         :root {
             --primary: #FF0000;
